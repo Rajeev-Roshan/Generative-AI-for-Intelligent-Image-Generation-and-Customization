@@ -1,0 +1,376 @@
+{
+  "155": {
+    "inputs": {
+      "categories": "background\n",
+      "confidence_threshold": 0.7000000000000001,
+      "iou_threshold": 0.1,
+      "box_thickness": 2,
+      "text_thickness": 2,
+      "text_scale": 1,
+      "with_confidence": false,
+      "with_class_agnostic_nms": false,
+      "with_segmentation": true,
+      "mask_combined": true,
+      "mask_extracted": false,
+      "mask_extracted_index": 0,
+      "yolo_world_model": [
+        "156",
+        0
+      ],
+      "esam_model": [
+        "157",
+        0
+      ],
+      "image": [
+        "205",
+        0
+      ]
+    },
+    "class_type": "Yoloworld_ESAM_Zho",
+    "_meta": {
+      "title": "🔎Yoloworld ESAM"
+    }
+  },
+  "156": {
+    "inputs": {
+      "yolo_world_model": "yolo_world/l"
+    },
+    "class_type": "Yoloworld_ModelLoader_Zho",
+    "_meta": {
+      "title": "🔎Yoloworld Model Loader"
+    }
+  },
+  "157": {
+    "inputs": {
+      "device": "CUDA"
+    },
+    "class_type": "ESAM_ModelLoader_Zho",
+    "_meta": {
+      "title": "🔎ESAM Model Loader"
+    }
+  },
+  "159": {
+    "inputs": {
+      "expand": 25,
+      "tapered_corners": true,
+      "mask": [
+        "155",
+        1
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask"
+    }
+  },
+  "176": {
+    "inputs": {
+      "seed": 1059091581997718,
+      "inpaint_model": [
+        "177",
+        0
+      ],
+      "image": [
+        "205",
+        0
+      ],
+      "mask": [
+        "159",
+        0
+      ]
+    },
+    "class_type": "INPAINT_InpaintWithModel",
+    "_meta": {
+      "title": "Inpaint (using Model)"
+    }
+  },
+  "177": {
+    "inputs": {
+      "model_name": "Places_512_FullData_G.pth"
+    },
+    "class_type": "INPAINT_LoadInpaintModel",
+    "_meta": {
+      "title": "Load Inpaint Model"
+    }
+  },
+  "179": {
+    "inputs": {
+      "ckpt_name": "juggernautXL_juggXIByRundiffusion.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "182": {
+    "inputs": {
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "211",
+        0
+      ],
+      "vae": [
+        "179",
+        2
+      ],
+      "pixels": [
+        "176",
+        0
+      ],
+      "mask": [
+        "159",
+        0
+      ]
+    },
+    "class_type": "INPAINT_VAEEncodeInpaintConditioning",
+    "_meta": {
+      "title": "VAE Encode & Inpaint Conditioning"
+    }
+  },
+  "185": {
+    "inputs": {
+      "scale": 0.5,
+      "blur_sigma": 2,
+      "model": [
+        "179",
+        0
+      ]
+    },
+    "class_type": "SelfAttentionGuidance",
+    "_meta": {
+      "title": "Self-Attention Guidance"
+    }
+  },
+  "186": {
+    "inputs": {
+      "model": [
+        "185",
+        0
+      ]
+    },
+    "class_type": "DifferentialDiffusion",
+    "_meta": {
+      "title": "Differential Diffusion"
+    }
+  },
+  "187": {
+    "inputs": {
+      "model": [
+        "186",
+        0
+      ],
+      "patch": [
+        "188",
+        0
+      ],
+      "latent": [
+        "182",
+        2
+      ]
+    },
+    "class_type": "INPAINT_ApplyFooocusInpaint",
+    "_meta": {
+      "title": "Apply Fooocus Inpaint"
+    }
+  },
+  "188": {
+    "inputs": {
+      "head": "fooocus_inpaint_head.pth",
+      "patch": "inpaint_v26.fooocus.patch"
+    },
+    "class_type": "INPAINT_LoadFooocusInpaint",
+    "_meta": {
+      "title": "Load Fooocus Inpaint"
+    }
+  },
+  "189": {
+    "inputs": {
+      "seed": 516060096929803,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "187",
+        0
+      ],
+      "positive": [
+        "182",
+        0
+      ],
+      "negative": [
+        "182",
+        1
+      ],
+      "latent_image": [
+        "182",
+        3
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "190": {
+    "inputs": {
+      "samples": [
+        "189",
+        0
+      ],
+      "vae": [
+        "179",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "201": {
+    "inputs": {
+      "images": [
+        "190",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "202": {
+    "inputs": {
+      "model": "wd-v1-4-moat-tagger-v2",
+      "threshold": 0.35,
+      "character_threshold": 0.85,
+      "replace_underscore": false,
+      "trailing_comma": false,
+      "exclude_tags": "",
+      "image": [
+        "205",
+        0
+      ]
+    },
+    "class_type": "WD14Tagger|pysssss",
+    "_meta": {
+      "title": "WD14 Tagger 🐍"
+    }
+  },
+  "205": {
+    "inputs": {
+      "image": ""
+    },
+    "class_type": "ETN_LoadImageBase64",
+    "_meta": {
+      "title": "Load Image (Base64)"
+    }
+  },
+  "206": {
+    "inputs": {
+      "model": "wd-v1-4-moat-tagger-v2",
+      "threshold": 0.35,
+      "character_threshold": 0.85,
+      "replace_underscore": false,
+      "trailing_comma": false,
+      "exclude_tags": "",
+      "image": [
+        "176",
+        0
+      ]
+    },
+    "class_type": "WD14Tagger|pysssss",
+    "_meta": {
+      "title": "WD14 Tagger 🐍"
+    }
+  },
+  "207": {
+    "inputs": {
+      "action": "append",
+      "tidy_tags": "yes",
+      "text_a": [
+        "206",
+        0
+      ],
+      "text_b": "",
+      "text_c": ""
+    },
+    "class_type": "StringFunction|pysssss",
+    "_meta": {
+      "title": "String Function 🐍"
+    }
+  },
+  "209": {
+    "inputs": {
+      "text_positive": [
+        "207",
+        0
+      ],
+      "text_negative": "nsfw",
+      "style": "cinematic",
+      "log_prompt": "No",
+      "style_name": ""
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  },
+  "210": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 1024,
+      "target_height": 1024,
+      "text_g": [
+        "209",
+        0
+      ],
+      "text_l": [
+        "209",
+        0
+      ],
+      "clip": [
+        "179",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  },
+  "211": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 1024,
+      "target_height": 1024,
+      "text_g": [
+        "209",
+        1
+      ],
+      "text_l": [
+        "209",
+        1
+      ],
+      "clip": [
+        "179",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  }
+}
